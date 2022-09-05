@@ -3,11 +3,13 @@ import random
 from sys import exit
 
 def display_time():
-    current_time=pygame.time.get_ticks()//1000-starting_time//1000
+    
+    current_time=pygame.time.get_ticks()//1000 -starting_time
     time_font=pygame.font.Font(None,20)
     time_surface=time_font.render("Time elapsed : "+ str(current_time),True,"Black")
     time_rect=time_surface.get_rect(midleft=(30,20))
     screen.blit(time_surface,time_rect)
+    return current_time
     
 pygame.init()
 screen=pygame.display.set_mode((800,480))#pygame.RESIZABLE)#creating a display surface
@@ -21,9 +23,10 @@ pygame.display.set_icon(icon)
 
 #constants
 starting_time=0
+time=0
 score=0
 gravity=0
-game_running=True
+game_running=False
 
 
 #objects
@@ -42,7 +45,7 @@ coin_rect=coin_surface.get_rect(bottomleft=(300,300))
 
 #characters
 player_surface=pygame.image.load("graphics/player_walk_1.png")
-player_rect=player_surface.get_rect(bottomleft=(30,300))
+player_rect=player_surface.get_rect(bottomleft=(50,300))
 
 snail_surface=pygame.image.load("graphics/snail1.png")
 snail_rect=snail_surface.get_rect(midbottom=(770,300))
@@ -84,7 +87,6 @@ while True:
     if game_running==True:
         #Text
         text=("Score :"+ str(score))
-        
         score_text_surface=score_font.render((text),False,"white")
             
         screen.blit(bg_surface,(0,0))
@@ -109,6 +111,7 @@ while True:
         #collision:
         if player_rect.colliderect(snail_rect):
             game_running=False
+            #starting_time=pygame.time.get_ticks()//1000
 
         if coin_rect.colliderect(player_rect):
             score+=1
@@ -125,8 +128,9 @@ while True:
         if coin_rect.left<=0:
             coin_rect.right=800
 
+    #screen after game over
 
-    if game_running==False:
+    if game_running==False and starting_time>0:
         pygame.time.wait(360)
         screen.fill("cornflowerblue")
         screen.blit(player_stand,playerstand_rect)
@@ -138,7 +142,26 @@ while True:
         final_score_surface=game_font.render("Infinite runner score :"+ str(score),False,"Powderblue")
         screen.blit(final_score_surface,(200,70))
 
-    
+        #screen before game begins:
+    if game_running==False and starting_time in range(0,12) and score==0:
+        #To account for the delay in game loading (rarely)
+        
+        screen.fill("salmon")
+        bsurface=pygame.image.load("graphics/Sky9.png")
+        bsurface=pygame.transform.scale(bsurface,(800,350))
+        screen.blit(bsurface,(0,0))
+        screen.blit(player_stand,playerstand_rect)
+        
+        game_font=pygame.font.Font(None,50)
+        game_font_surface=game_font.render("Press space to play the game",False,"Crimson")
+        screen.blit(game_font_surface,(170,390))
+
+        game_name=game_font.render("Infinite Runner",False,"Crimson")
+        screen.blit(game_name,(250,70))
+
+
+
+        
     pygame.display.update()#for updating the initial display surface
     clock.tick(60)#The while true loop should not run faster than 60 times a sec
 

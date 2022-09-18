@@ -15,12 +15,14 @@ def obstracle_movement(obstracle_rect_list):
     if (obstracle_rect_list):
         for obstracle_rect in obstracle_rect_list:
             obstracle_rect.left-=4
+            if obstracle_rect.left in range((snail_rect.left)-60,(snail_rect.left)+60):
+                obstracle_rect_list.remove(obstracle_rect)
             if obstracle_rect.bottom==300:
                 screen.blit(snail_surface,obstracle_rect)
-            if obstracle_rect.bottom==120:
+            if obstracle_rect.bottom==200:
                 screen.blit(fly_surface,obstracle_rect)
-            if obstracle_rect.left in range((snail_rect.left)-20,(snail_rect.left)+20):
-                obstracle_rect_list.remove(obstracle_rect)
+                
+
             #if obstracle_rect.colliderect(player_rect):
                 #game_running=False
 
@@ -37,6 +39,25 @@ def collision(player_rect,obstracle_rect_list):
         return True
     else:
         return True
+
+def player_animation():
+    global player_surface,player_index
+    if player_rect.bottom<300:
+        player_surface=player_jump
+    else:
+        player_index+=0.1
+        
+        if player_index>=len(player_walk):
+            player_index=0
+        player_surface=player_walk[int(player_index)]
+
+def coin_animation():
+    global coin_surface,coin_index
+    coin_index+=0.1
+    if coin_index>len(coin_spin):
+        coin_index=0
+    coin_surface=coin_spin[int(coin_index)]
+        
 pygame.init()
 screen=pygame.display.set_mode((800,480))#pygame.RESIZABLE)#creating a display surface
 screen.fill("Green")
@@ -67,11 +88,24 @@ score_surface = pygame.image.load("graphics/board1.png")
 score_rect = score_surface.get_rect(midtop=(750,0))
 
 #coins
-coin_surface=pygame.image.load("graphics/coin1.png")
+coin_index=0
+coin1=pygame.image.load("graphics/coin1.png")
+coin2=pygame.image.load("graphics/coin4.png")
+coin3=pygame.image.load("graphics/coin3.png")
+coin4=pygame.image.load("graphics/coin2.png")
+coin5=pygame.image.load("graphics/coin6.png")
+coin6=pygame.image.load("graphics/coin7.png")
+coin_spin=[coin1,coin2,coin3,coin4,coin5,coin6,coin1]
+coin_surface=coin_spin[coin_index]
 coin_rect=coin_surface.get_rect(bottomleft=(300,300))
 
 #characters
-player_surface=pygame.image.load("graphics/player_walk_1.png")
+player_index=0
+player_walk_1=pygame.image.load("graphics/player_walk_1.png")
+player_walk_2=pygame.image.load("graphics/player_walk_2.png")
+player_jump=pygame.image.load("graphics/jump.png")
+player_walk=[player_walk_1,player_walk_2]
+player_surface=player_walk[player_index]
 player_rect=player_surface.get_rect(bottomleft=(50,300))
 
 snail_surface=pygame.image.load("graphics/snail1.png")
@@ -106,7 +140,7 @@ while True:
                 if choice in ["snail",]:
                     obstracle_rect_list.append(snail_surface.get_rect(midbottom=(position,300)))
                 if choice in ["fly",]:
-                    obstracle_rect_list.append(fly_surface.get_rect(midbottom=(position,120)))
+                    obstracle_rect_list.append(fly_surface.get_rect(midbottom=(position,200)))
 
             if event.type==pygame.KEYDOWN and player_rect.colliderect(snail_rect)==False:
                 if event.key==pygame.K_UP and player_rect.bottom>=100:
@@ -140,7 +174,8 @@ while True:
         screen.blit(snail_surface,snail_rect)
 
         display_time()
-
+        player_animation()
+        coin_animation()
         #gravity mechanism:
         gravity+=1
         player_rect.y+=gravity

@@ -10,7 +10,33 @@ def display_time():
     time_rect=time_surface.get_rect(midleft=(30,20))
     screen.blit(time_surface,time_rect)
     return current_time
-    
+
+def obstracle_movement(obstracle_rect_list):
+    if (obstracle_rect_list):
+        for obstracle_rect in obstracle_rect_list:
+            obstracle_rect.left-=4
+            if obstracle_rect.bottom==300:
+                screen.blit(snail_surface,obstracle_rect)
+            if obstracle_rect.bottom==120:
+                screen.blit(fly_surface,obstracle_rect)
+            if obstracle_rect.left in range((snail_rect.left)-20,(snail_rect.left)+20):
+                obstracle_rect_list.remove(obstracle_rect)
+            #if obstracle_rect.colliderect(player_rect):
+                #game_running=False
+
+        obsracle_rect_list=[obstracle for obstracle in obstracle_rect_list if obstracle.x>-100]
+        return list(obstracle_rect_list)
+    else:
+        return []
+            
+def collision(player_rect,obstracle_rect_list):
+    if obstracle_rect_list:
+        for obstracle_rect in obstracle_rect_list:
+            if player_rect.colliderect(obstracle_rect):
+                return False
+        return True
+    else:
+        return True
 pygame.init()
 screen=pygame.display.set_mode((800,480))#pygame.RESIZABLE)#creating a display surface
 screen.fill("Green")
@@ -22,6 +48,7 @@ icon=pygame.image.load("graphics/lemon.png")
 pygame.display.set_icon(icon)
 
 #constants
+obstracle_rect_list=[]
 starting_time=0
 time=0
 score=0
@@ -50,9 +77,14 @@ player_rect=player_surface.get_rect(bottomleft=(50,300))
 snail_surface=pygame.image.load("graphics/snail1.png")
 snail_rect=snail_surface.get_rect(midbottom=(770,300))
 
+fly_surface=pygame.image.load("graphics/Fly1.png")
+
 player_stand=pygame.image.load("graphics/player_stand.png")
 player_stand=pygame.transform.scale2x(player_stand) #Transforming the player_surf
 playerstand_rect=player_stand.get_rect(center=(360,260))
+
+obstracle_timer=pygame.USEREVENT+1
+pygame.time.set_timer(obstracle_timer,1800)
 
 #Game over
 #game_font=pygame.font.Font(None,50)
@@ -68,6 +100,14 @@ while True:
             exit()
             
         if game_running == True:
+            if event.type==obstracle_timer:
+                choice=random.choice(("snail","fly"))
+                position=random.randint(900,1100)
+                if choice in ["snail",]:
+                    obstracle_rect_list.append(snail_surface.get_rect(midbottom=(position,300)))
+                if choice in ["fly",]:
+                    obstracle_rect_list.append(fly_surface.get_rect(midbottom=(position,120)))
+
             if event.type==pygame.KEYDOWN and player_rect.colliderect(snail_rect)==False:
                 if event.key==pygame.K_UP and player_rect.bottom>=100:
                     gravity = -15
@@ -80,6 +120,7 @@ while True:
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
                     game_running=True
+                    obstracle_rect_list=[]
                     snail_rect.right=800
                     score=0
                     starting_time=pygame.time.get_ticks()//1000
@@ -107,8 +148,11 @@ while True:
         if player_rect.bottom>=300:
             player_rect.bottom=300
             gravity=0
-        
+
+        obstracle_rect_list=obstracle_movement(obstracle_rect_list)
         #collision:
+
+        game_running=collision(player_rect,obstracle_rect_list)
         if player_rect.colliderect(snail_rect):
             game_running=False
             #starting_time=pygame.time.get_ticks()//1000
@@ -141,6 +185,11 @@ while True:
 
         final_score_surface=game_font.render("Infinite runner score :"+ str(score),False,"Powderblue")
         screen.blit(final_score_surface,(200,70))
+
+        '''while True:
+            value=pygame.mouse.get_pressed()
+            if value[0]==True:
+                game_running=True'''
 
         #screen before game begins:
     if game_running==False and starting_time in range(0,12) and score==0:

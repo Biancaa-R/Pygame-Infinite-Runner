@@ -1,4 +1,6 @@
 # Pygame-Infinite-Runner 
+
+<img src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20Infinite%20Runner.gif"></img>
 @Its a game developed using pygame module where the player keeps on running until he collides with an enemy.
 
 @Collecting coins boosts his score and at the end of the game his score is displayed in the screen.

@@ -35,6 +35,7 @@ def collision(player_rect,obstracle_rect_list):
     if obstracle_rect_list:
         for obstracle_rect in obstracle_rect_list:
             if player_rect.colliderect(obstracle_rect):
+                settings=False
                 return False
         return True
     else:
@@ -63,7 +64,8 @@ def primary_snail_animation():
     snail_index+=0.1
     if snail_index>=len(snail):
         snail_index=0
-    snail_surface=snail[int(snail_index)]    
+    snail_surface=snail[int(snail_index)]
+
         
 pygame.init()
 screen=pygame.display.set_mode((800,480))#pygame.RESIZABLE)#creating a display surface
@@ -82,9 +84,12 @@ time=0
 score=0
 gravity=0
 game_running=False
+global settings
+settings=False
 global game_level
 game_level=0
-
+global colour
+colour="aqua"
 
 #objects
 
@@ -104,6 +109,7 @@ sky13=pygame.image.load("graphics/Sky13.jpg")
 sky=[sky1,sky2,sky3,sky4,sky5,sky6,sky7,sky8,sky9,sky10,sky11,sky12,sky13]
 if game_level>12:
     game_level=0
+    
 bg_surface=pygame.Surface((800,300))
 bg_surface=sky[game_level]
 ground_surface=pygame.Surface((800,200))
@@ -111,6 +117,12 @@ ground_surface=pygame.image.load("graphics/ground.png")
 
 score_surface = pygame.image.load("graphics/board1.png")
 score_rect = score_surface.get_rect(midtop=(750,0))
+
+replay_surface=pygame.image.load("graphics/replay.png")
+replay_rect=replay_surface.get_rect(midtop=(750,390))
+
+settings_surface=pygame.image.load("graphics/settings.png")
+settings_rect=settings_surface.get_rect(midtop=(710,390))
 
 #coins
 coin_index=0
@@ -125,10 +137,37 @@ coin_surface=coin_spin[coin_index]
 coin_rect=coin_surface.get_rect(bottomleft=(300,300))
 
 #characters
+if colour in ["aqua",]:
+    walk1="graphics/player_walk_1.png"
+    walk2="graphics/player_walk_2.png"
+    jump="graphics/jump.png"
+    stand="graphics/player_stand.png"
+if colour in ["blue",]:
+    walk1="graphics/player_walk_1_b.png"
+    walk2="graphics/player_walk_2_b.png"
+    jump="graphics/jump_b.png"
+    stand="graphics/player_stand_b.png"
+if colour in ["red",]:
+    walk1="graphics/player_walk_1_r.png"
+    walk2="graphics/player_walk_2_r.png"
+    jump="graphics/jump_r.png"
+    stand="graphics/player_stand_r.png"
+if colour in ["violet",]:
+    walk1="graphics/player_walk_1_v.png"
+    walk2="graphics/player_walk_2_v.png"
+    jump="graphics/jump_v.png"
+    stand="graphics/player_stand_v.png"
+if colour in ["yellow",]:
+    walk1="graphics/player_walk_1_y.png"
+    walk2="graphics/player_walk_2_y.png"
+    jump="graphics/jump_y.png"
+    stand="graphics/player_stand_y.png"
+
+
 player_index=0
-player_walk_1=pygame.image.load("graphics/player_walk_1.png").convert_alpha()
-player_walk_2=pygame.image.load("graphics/player_walk_2.png").convert_alpha()
-player_jump=pygame.image.load("graphics/jump.png").convert_alpha()
+player_walk_1=pygame.image.load(walk1).convert_alpha()
+player_walk_2=pygame.image.load(walk2).convert_alpha()
+player_jump=pygame.image.load(jump).convert_alpha()
 player_walk=[player_walk_1,player_walk_2]
 player_surface=player_walk[player_index]
 player_rect=player_surface.get_rect(bottomleft=(50,300))
@@ -146,9 +185,32 @@ fly2=pygame.image.load("graphics/Fly2.png").convert_alpha()
 fly=[fly1,fly2]
 fly_surface=fly[fly_index]
 
-player_stand=pygame.image.load("graphics/player_stand.png")
+player_stand=pygame.image.load(stand)
 player_stand=pygame.transform.scale2x(player_stand) #Transforming the player_surf
 playerstand_rect=player_stand.get_rect(center=(360,260))
+
+#Styles:
+player_stand_a=pygame.image.load("graphics/player_stand.png")
+player_stand_a=pygame.transform.scale2x(player_stand_a)
+playerstand_rect_a=player_stand_a.get_rect(center=(230,260))
+
+player_stand_r=pygame.image.load("graphics/player_stand_r.png")
+player_stand_r=pygame.transform.scale2x(player_stand_r)
+playerstand_rect_r=player_stand_r.get_rect(center=(360,260))
+
+player_stand_b=pygame.image.load("graphics/player_stand_b.png")
+player_stand_b=pygame.transform.scale2x(player_stand_b)
+playerstand_rect_b=player_stand_b.get_rect(center=(490,260))
+
+player_stand_v=pygame.image.load("graphics/player_stand_v.png")
+player_stand_v=pygame.transform.scale2x(player_stand_v)
+playerstand_rect_v=player_stand_v.get_rect(center=(620,260))
+
+player_stand_y=pygame.image.load("graphics/player_stand_y.png")
+player_stand_y=pygame.transform.scale2x(player_stand_y)
+playerstand_rect_y=player_stand_y.get_rect(center=(100,260))
+
+
 
 obstracle_timer=pygame.USEREVENT+1
 pygame.time.set_timer(obstracle_timer,1800)
@@ -199,9 +261,16 @@ while True:
                     game_running=True
                     
         if game_running == False:
+            if event.type==pygame.MOUSEMOTION:
+                if settings_rect.collidepoint(event.pos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        settings=True
+                        
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_SPACE:
                     game_running=True
+                    settings=False
                     obstracle_rect_list=[]
                     snail_rect.right=800
                     if score>=3:
@@ -209,6 +278,52 @@ while True:
                     score=0
                     starting_time=pygame.time.get_ticks()//1000
                     
+            mousepos=pygame.mouse.get_pos()
+            if replay_rect.collidepoint(mousepos):
+                book=pygame.mouse.get_pressed()
+                if book[0]==True:
+                    game_running=True
+                    settings=False
+                    obstracle_rect_list=[]
+                    snail_rect.right=800
+                    if score>=3:
+                        game_level+=1
+                    score=0
+                    starting_time=pygame.time.get_ticks()//1000
+            mousepos=pygame.mouse.get_pos()
+            if settings_rect.collidepoint(mousepos):
+                book=pygame.mouse.get_pressed()
+                if book[0]==True:
+                    settings=True
+                else:
+                    pass
+            
+            if settings==True:
+                mousepos=pygame.mouse.get_pos()
+                if playerstand_rect_r.collidepoint(mousepos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        colour="red"
+                if playerstand_rect_b.collidepoint(mousepos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        colour="blue"
+                if playerstand_rect_v.collidepoint(mousepos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        colour="violet"
+                if playerstand_rect_a.collidepoint(mousepos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        colour="aqua"
+                if playerstand_rect_y.collidepoint(mousepos):
+                    book=pygame.mouse.get_pressed()
+                    if book[0]==True:
+                        colour="yellow"
+                
+                
+                
+     
     if game_running==True:
         #Text
         text=("Score :"+ str(score))
@@ -219,6 +334,40 @@ while True:
         screen.blit(coin_surface,coin_rect)
         screen.blit(score_surface,score_rect)
         screen.blit(score_text_surface,(720,10))
+
+        if colour in ["aqua",]:
+            walk1="graphics/player_walk_1.png"
+            walk2="graphics/player_walk_2.png"
+            jump="graphics/jump.png"
+            stand="graphics/player_stand.png"
+        if colour in ["blue",]:
+            walk1="graphics/player_walk_1_b.png"
+            walk2="graphics/player_walk_2_b.png"
+            jump="graphics/jump_b.png"
+            stand="graphics/player_stand_b.png"
+        if colour in ["red",]:
+            walk1="graphics/player_walk_1_r.png"
+            walk2="graphics/player_walk_2_r.png"
+            jump="graphics/jump_r.png"
+            stand="graphics/player_stand_r.png"
+        if colour in ["violet",]:
+            walk1="graphics/player_walk_1_v.png"
+            walk2="graphics/player_walk_2_v.png"
+            jump="graphics/jump_v.png"
+            stand="graphics/player_stand_v.png"
+        if colour in ["yellow",]:
+            walk1="graphics/player_walk_1_y.png"
+            walk2="graphics/player_walk_2_y.png"
+            jump="graphics/jump_y.png"
+            stand="graphics/player_stand_y.png"
+
+        player_walk_1=pygame.image.load(walk1).convert_alpha()
+        player_walk_2=pygame.image.load(walk2).convert_alpha()
+        player_jump=pygame.image.load(jump).convert_alpha()
+        player_walk=[player_walk_1,player_walk_2]
+        player_surface=player_walk[int(player_index)]
+        #player_rect=player_surface.get_rect(bottomleft=(50,300))
+
 
         screen.blit(player_surface,player_rect)
         screen.blit(snail_surface,snail_rect)
@@ -246,6 +395,7 @@ while True:
         game_running=collision(player_rect,obstracle_rect_list)
         if player_rect.colliderect(snail_rect):
             game_running=False
+            settings=False
             #starting_time=pygame.time.get_ticks()//1000
 
         if coin_rect.colliderect(player_rect):
@@ -268,7 +418,10 @@ while True:
     if game_running==False and starting_time>0:
         pygame.time.wait(360)
         screen.fill("cornflowerblue")
+        
         screen.blit(player_stand,playerstand_rect)
+
+        screen.blit(replay_surface,replay_rect)
         
         game_font=pygame.font.Font(None,50)
         game_font_surface=game_font.render("Press space to replay",False,"Powderblue")
@@ -291,6 +444,9 @@ while True:
         bsurface=pygame.transform.scale(bsurface,(800,350))
         screen.blit(bsurface,(0,0))
         screen.blit(player_stand,playerstand_rect)
+
+        screen.blit(replay_surface,replay_rect)
+        screen.blit(settings_surface,settings_rect)
         
         game_font=pygame.font.Font(None,50)
         game_font_surface=game_font.render("Press space to play the game",False,"Crimson")
@@ -298,6 +454,28 @@ while True:
 
         game_name=game_font.render("Infinite Runner",False,"Crimson")
         screen.blit(game_name,(250,70))
+
+        if settings==True and game_running==False:
+            screen.fill("cornflowerblue")
+
+            screen.blit(player_stand_y,playerstand_rect_y)
+            screen.blit(player_stand_a,playerstand_rect_a)
+            screen.blit(player_stand_r,playerstand_rect_r)
+            screen.blit(player_stand_b,playerstand_rect_b)
+            screen.blit(player_stand_v,playerstand_rect_v)
+
+            screen.blit(replay_surface,replay_rect)
+        
+        
+            game_font=pygame.font.Font(None,50)
+            game_font_surface=game_font.render("Press space to replay",False,"Powderblue")
+            screen.blit(game_font_surface,(180,370))
+
+            select_surface=game_font.render("Click on the colour to select avatar",False,"Powderblue")
+            screen.blit(select_surface,(120,70))
+
+                    
+               
 
     pygame.display.update()#for updating the initial display surface
     clock.tick(60)#The while true loop should not run faster than 60 times a sec

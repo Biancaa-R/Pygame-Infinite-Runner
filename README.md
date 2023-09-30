@@ -16,21 +16,27 @@ Biancaa.R and N.Piratheepan
 implementing their knowledge on game logic and pygame module.
 
 # The UI:
+<div>
+<img width=40% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(1).png">
+<img width=40% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(3).png">
+</div>
 
-<img width=48% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(1).png">
-<img width=48% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(3).png">
+<div>
+
+<img width=40% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(4).png">
+<img width=40% align =right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(5).png">
+
+</div>
+<img width=40% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(6).png">
+<img width=40% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(7).png">
+
+<img width=40% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(8).png">
+<img width=40% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(9).png">
 
 
-<img width=48% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(4).png">
-<img width=48% align =right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(5).png">
+<br>
+<div> 
 
+# Thank you 
 
-<img width=48% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(6).png">
-<img width=48% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(7).png">
-
-<img width=48% align=left src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(8).png">
-<img width=48% align=right src="https://github.com/Biancaa-R/Pygame-Infinite-Runner/blob/main/Pygame%20infinite%20runner/screen%20shots/2022-09-19%20(9).png">
-
-
-
-# Thank you
+</div>
